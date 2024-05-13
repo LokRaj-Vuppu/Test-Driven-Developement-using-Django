@@ -35,7 +35,14 @@ urlpatterns = [
         ),
         name="password_reset_complete",
     ),
-    path("current_user_profile/",account_views.current_user_profile, name="current_user_profile"),
-    path('update_user_profile/',account_views.update_user_profile,name='update_user_profile'),
-
+    path(
+        "current_user_profile/",
+        account_views.current_user_profile,
+        name="current_user_profile",
+    ),
+    path(
+        "update_user_profile/",
+        account_views.update_user_profile,
+        name="update_user_profile",
+    ),
 ]

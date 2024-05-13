@@ -51,15 +51,11 @@ def logout_view(request):
 def current_user_profile(request):
     user = request.user
 
-    posts =  Post.objects.filter(author=user).all()
+    posts = Post.objects.filter(author=user).all()
 
-    context ={
-        'user':user,
-        'posts': posts
-    }
+    context = {"user": user, "posts": posts}
 
-    return render(request,'accounts/currentuserprofile.html',context)
-
+    return render(request, "accounts/currentuserprofile.html", context)
 
 
 @login_required
@@ -68,24 +64,27 @@ def update_user_profile(request):
     profile_form = ProfileUpdateForm(instance=request.user.profile)
 
     if request.method == "POST":
-        profile_form = ProfileUpdateForm(instance=request.user.profile,data={
-            'bio':request.POST.get('bio',None),
-            'address':request.POST.get('address',None)
-        })
-        user_form = UserUpdateForm(instance=request.user,data={
-            'first_name':request.POST.get('first_name',None),
-            'last_name':request.POST.get('last_name',None),
-            'username':request.POST.get('username',None),
-        })
+        profile_form = ProfileUpdateForm(
+            instance=request.user.profile,
+            data={
+                "bio": request.POST.get("bio", None),
+                "address": request.POST.get("address", None),
+            },
+        )
+        user_form = UserUpdateForm(
+            instance=request.user,
+            data={
+                "first_name": request.POST.get("first_name", None),
+                "last_name": request.POST.get("last_name", None),
+                "username": request.POST.get("username", None),
+            },
+        )
 
         if profile_form.is_valid() and user_form.is_valid():
             profile_form.save()
             user_form.save()
 
-            return redirect(reverse('current_user_profile'))
+            return redirect(reverse("current_user_profile"))
 
-    context ={
-        'profile_form':profile_form,
-        'user_form':user_form
-    }
-    return render(request,'accounts/updateprofile.html',context)
+    context = {"profile_form": profile_form, "user_form": user_form}
+    return render(request, "accounts/updateprofile.html", context)

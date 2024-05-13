@@ -7,11 +7,11 @@ from django.contrib.auth.models import User
 
 class PostModelTest(TestCase):
 
-    
     def setUp(self):
         self.user = baker.make(User)
-        self.post = Post.objects.create(title='Demo', body='test body', author=self.user)
-
+        self.post = Post.objects.create(
+            title="Demo", body="test body", author=self.user
+        )
 
     # test number of records in table
     def test_post_model_exists(self):
@@ -25,7 +25,6 @@ class PostModelTest(TestCase):
         self.assertEqual(
             str(created_post), f"{created_post.title} - {created_post.body}"
         )
-
 
     def test_post_model_get_absolute_uri_method(self):
         url = self.post.get_absolute_url()

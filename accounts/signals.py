@@ -4,10 +4,13 @@ from django.dispatch import receiver
 from .models import Profile
 from accounts.utils import create_avatar
 
+
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
-        Profile.objects.create(user=instance, profile_image=create_avatar(instance.email))
+        Profile.objects.create(
+            user=instance, profile_image=create_avatar(instance.email)
+        )
 
 
 @receiver(post_save, sender=User)

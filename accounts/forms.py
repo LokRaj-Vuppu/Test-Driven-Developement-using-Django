@@ -14,19 +14,19 @@ class UserRegistrationForm(UserCreationForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields =['bio','address']
-        widgets={
-            'bio':forms.Textarea(attrs={'class':'form-control'}),
-            'address':forms.TextInput(attrs={'class':'form-control'}),
+        fields = ["bio", "address"]
+        widgets = {
+            "bio": forms.Textarea(attrs={"class": "form-control"}),
+            "address": forms.TextInput(attrs={"class": "form-control"}),
         }
 
 
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
-        fields =['first_name','last_name','username']
-        widgets={
-            'username':forms.TextInput(attrs={'class':'form-control'}),
-            'first_name':forms.TextInput(attrs={'class':'form-control'}),
-            'last_name':forms.TextInput(attrs={'class':'form-control'}),
+        fields = ["first_name", "last_name", "username"]
+        widgets = {
+            "username": forms.TextInput(attrs={"class": "form-control"}),
+            "first_name": forms.TextInput(attrs={"class": "form-control"}),
+            "last_name": forms.TextInput(attrs={"class": "form-control"}),
         }

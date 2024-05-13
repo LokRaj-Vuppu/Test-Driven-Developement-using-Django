@@ -28,6 +28,3 @@ class TestLogout(TestCase):
         response = self.client.get(reverse("logout"))
 
         self.assertFalse("_auth_user_id" in self.client.session)
-
-
-

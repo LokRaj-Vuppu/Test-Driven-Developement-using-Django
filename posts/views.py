@@ -3,6 +3,7 @@ from django.urls import reverse
 from posts.models import Post
 from posts.forms import PostCreationForm
 from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 
@@ -26,13 +27,13 @@ def post_detail(request, id):
 @login_required
 def create_post(request):
     form = PostCreationForm()
-    if request.method == 'POST':
+    if request.method == "POST":
         form = PostCreationForm(request.POST)
         if form.is_valid():
             form_obj = form.save(commit=False)
             form_obj.author = request.user
             form_obj.save()
-            return redirect(reverse('homepage'))
-    
-    context = {'form': form}
-    return render(request, 'posts/createpost.html', context)
+            return redirect(reverse("homepage"))
+
+    context = {"form": form}
+    return render(request, "posts/createpost.html", context)
