@@ -16,4 +16,4 @@ This Django project is developed using Test-Driven Development (TDD) methodology
 - libgravatar - To create an avatar, based on picture linked to the email.
 - model-bakery - To create model data.
 - coverage - To get the consolidated test reports.
-
+- Black - Formats code according to PEP8.
