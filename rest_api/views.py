@@ -1,16 +1,35 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.decorators import login_required
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from django.contrib.auth import authenticate, login, logout
-from rest_api.models import Movies
+from rest_api.models import Movies, Book
+from posts.models import Post
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_api.serializers import CreatMovieRequestValidationSerializer, InputValidationserializer, LoginRequestValidationSerializer, MoviesSerializer, MovieDetailedViewInputValidationSerializer, \
-UpdateMovieRequestValidationSerializer
+UpdateMovieRequestValidationSerializer, BookSerializer, PostSerializer
+from rest_framework import viewsets
+from django.views.decorators.cache import cache_page
+from rest_api.forms import ArticleForm, CommentForm, RegistrationForm
+
+
+
+# For viewset and Routers
+
+# DefaultRouter(), BaseRouter()
+class BookViewSet(viewsets.ModelViewSet):
+    queryset = Book.objects.all()[:100]
+    serializer_class = BookSerializer
+
+
+
+class PostViewSet(viewsets.ModelViewSet):
+    queryset = Post.objects.all()[:100]
+    serializer_class = PostSerializer
 
 
 # Session Authentication
@@ -71,11 +90,12 @@ class CustomAuthToken(ObtainAuthToken):
 
 @api_view(["GET"])
 # @authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
+# @cache_page(60 * 15)
 def get_all_movies(request):
     try:
         print('request get all movies', request.data)
-        movies = Movies.objects.all()
+        movies = Movies.objects.all()[:100]
         movies_serializer = MoviesSerializer(movies, many=True).data
         return Response(
             {"movies_serializer": movies_serializer, "message": "Fetched all Movies !"},
@@ -176,3 +196,25 @@ def input_validation_with_serializer(request):
             )
     except Exception as error:
         print(f"exception in input validation | {error}")
+
+
+# Forms Testing
+from django.forms import formset_factory
+from rest_api.forms import GeeksForm
+def form1(request):
+    context ={} 
+  
+    # creating a formset and 5 instances of GeeksForm 
+    GeeksFormSet = formset_factory(GeeksForm, extra = 5) 
+    formset = GeeksFormSet()
+    if request.method == 'POST':
+        formset = GeeksFormSet(request.POST or None) 
+        
+        # print formset data if it is valid 
+        if formset.is_valid(): 
+            for form in formset: 
+                print(form.cleaned_data) 
+      
+    # Add the formset to context dictionary 
+    context['formset']= formset 
+    return render(request, "rest_api/form1.html", context) 

@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from rest_api.models import Movies
+from rest_api.models import Movies, Book
+from posts.models import Post
 
 
 class MoviesSerializer(serializers.ModelSerializer):
@@ -37,3 +38,15 @@ class CreatMovieRequestValidationSerializer(serializers.Serializer):
 class LoginRequestValidationSerializer(serializers.Serializer):
     username = serializers.CharField(required=True, allow_null=False, allow_blank=False)
     password = serializers.CharField(required=True, allow_null=False, allow_blank=False)
+
+
+class BookSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = '__all__'
+
+
+class PostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Post
+        fields = '__all__'

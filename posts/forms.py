@@ -6,4 +6,11 @@ class PostCreationForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ["title", "body"]
+        fields = ["title", "body", "post_file"]
+
+
+class PostUpdationForm(forms.ModelForm):
+
+    class Meta:
+        model = Post
+        fields = '__all__'

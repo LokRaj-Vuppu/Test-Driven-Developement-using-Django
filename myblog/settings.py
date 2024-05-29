@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -41,12 +42,18 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     'rest_framework_simplejwt',
+    'django_celery_results',
+    'django_celery_beat',
     "posts",
     "accounts",
     "crispy_forms",
     "crispy_bootstrap5",
     "rest_api",
+    "debug_toolbar",
+    'dbbackup',  # django-dbbackup
+    'aa_orm'
 ]
+
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
@@ -54,6 +61,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -61,7 +69,25 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "accounts.middleware.UserplatformOSIdentifier",
 ]
+
+
+# DEBUG_TOOLBAR_PANELS = [
+#     'debug_toolbar.panels.history.HistoryPanel',
+#     'debug_toolbar.panels.versions.VersionsPanel',
+#     'debug_toolbar.panels.timer.TimerPanel',
+#     'debug_toolbar.panels.settings.SettingsPanel',
+#     'debug_toolbar.panels.headers.HeadersPanel',
+#     'debug_toolbar.panels.request.RequestPanel',
+#     'debug_toolbar.panels.sql.SQLPanel',
+#     'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+#     'debug_toolbar.panels.templates.TemplatesPanel',
+#     'debug_toolbar.panels.cache.CachePanel',
+#     'debug_toolbar.panels.signals.SignalsPanel',
+#     'debug_toolbar.panels.redirects.RedirectsPanel',
+#     'debug_toolbar.panels.profiling.ProfilingPanel',
+# ]
 
 ROOT_URLCONF = "myblog.urls"
 
@@ -102,6 +128,7 @@ REST_FRAMEWORK = {
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# sqlite3
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
@@ -109,10 +136,33 @@ DATABASES = {
     }
 }
 
+# Postgres
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': 'db_django',
+#        'USER': 'postgres',
+#        'PASSWORD': 'vuppu',
+#        'HOST': '127.0.0.1',
+#        'PORT': '5432',
+#    }
+# }
+
+
+
+
 
 # Email settings
-
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# print email in console
+# EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+# Gmail config
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'lokrajkumarv1@gmail.com'
+EMAIL_HOST_PASSWORD = 'esmt goyl ajiy qebx'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'Celery <lokrajkumarv1@gmail.com>'
 
 
 # Password validation
@@ -139,7 +189,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Kolkata"
 
 USE_I18N = True
 
@@ -149,9 +199,67 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = "static/"
+# URL to use when referring to static files located in STATIC_ROOT.
+STATIC_URL = '/static/'
+
+# The absolute path to the directory where collectstatic will collect static files for deployment.
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Additional locations the staticfiles app will traverse if the FileSystemFinder finder is enabled.
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+
+# Celery Configuration Options
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_TIMEZONE = "Asia/Kolkata"
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_TIME_LIMIT = 30 * 60
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_CACHE_BACKEND = 'django-cache'
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+
+# cache
+# Database caching
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+#         "LOCATION": "my_cache_table",
+#     }
+# }
+
+
+# Redis caching
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+    "locahost"
+]
+
+
+# MEDIA FIles, for uplaoding files, images
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# Configuration for 'dbbackup'
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': f"{os.path.join(BASE_DIR, 'db_backup')}"}
