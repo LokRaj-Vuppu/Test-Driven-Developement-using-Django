@@ -5,12 +5,14 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from posts.models import Post
 from django.contrib.auth.decorators import login_required
+from accounts.decorators import is_user_authenticated
+from django.conf import settings
 
 
+@is_user_authenticated #custom decorator
 def register(request):
     try:
         form = UserRegistrationForm()
-
         if request.method == "POST":
             form = UserRegistrationForm(request.POST)
             if form.is_valid():
@@ -21,9 +23,12 @@ def register(request):
     except Exception as error:
         print(f"Exception in registering user - {error}")
 
-
+ 
+@is_user_authenticated #custom decorator
 def login_view(request):
     form = AuthenticationForm()
+    # import pdb
+    # pdb.set_trace()
     if request.method == "POST":
         form = AuthenticationForm(request, request.POST)
 
@@ -35,6 +40,13 @@ def login_view(request):
 
             if user is not None:
                 login(request, user)
+                from .tasks import send_login_mail
+                send_login_mail.delay(
+                    user_email = request.user.email,
+                    sender = settings.EMAIL_HOST_USER,
+                    subject = "Welcome!",
+                    message = "Thank you for logging in. Welcome to our website!" 
+                )
 
                 return redirect(reverse("homepage"))
 

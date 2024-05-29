@@ -1,0 +1,22 @@
+<body>
+    <h1>
+        Index page ORM Series
+    </h1>
+
+    {% for restaurant in restaurants %}
+        {{restaurant.name}}
+        <h4>Ratings</h4>
+        <ul>
+            {% for rating in restaurant.ratings.all %}
+            <li>{{rating.rating}}</li>
+            {% endfor %}
+        </ul>
+        <h4>Sales</h4>
+        <ul>
+            {% for sale in restaurant.sales.all %}
+            <li>{{sale.income}}</li>
+            {% endfor %}
+        </ul>
+
+    {% endfor %}
+</body>

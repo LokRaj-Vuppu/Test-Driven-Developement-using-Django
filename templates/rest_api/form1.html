@@ -1,0 +1,11 @@
+{% load static %}
+<img src = "{% static 'images/trees.jpg' %}" height="200" width="200" alt='Image not found' class="d-inline-block align-top">
+
+
+<form method="POST" enctype="multipart/form-data"> 
+	{% csrf_token %} 
+	{{ formset.as_p }} 
+	<input type="submit" value="Submit"> 
+</form> 
+
+<!-- C:\Users\lokra\Music\Django Projects\test-driven-development\static\images\test.avif -->

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Posts List using Django Generic Class Based View</h1>
+    <ol>
+        {% for post in posts_list %}
+            <li>{{ post }}</li>
+        {% endfor %}
+    </ol>
+{% endblock %}

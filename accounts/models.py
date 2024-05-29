@@ -22,3 +22,21 @@ class Profile(models.Model):
 
     def __str__(self) -> str:
         return f"<Profile for {self.user.username}>"
+    
+
+
+class PlatformStatistics(models.Model):
+    windows = models.IntegerField()
+    mac = models.IntegerField()
+    iphone = models.IntegerField()
+    android = models.IntegerField()
+    others = models.IntegerField()
+
+    def __str__(self) -> str:
+        return f"""windows - {self.windows} | MAC - {self.mac} | iphone - {self.iphone}
+                | android - {self.android} | others - {self.others}"""
+    
+    class Meta:
+        # verbose_name = "Platform Statistics"
+        verbose_name_plural = "Platform Statistics"
+
