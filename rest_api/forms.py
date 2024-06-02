@@ -1,7 +1,9 @@
 from django import forms
 
+
 class RegistrationForm(forms.Form):
     pass
+
 
 class CommentForm(forms.Form):
     name = forms.CharField(label="Your name")
@@ -10,9 +12,10 @@ class CommentForm(forms.Form):
 
 
 class ArticleForm(forms.Form):
-   title = forms.CharField()
-   pub_date = forms.DateField()
+    title = forms.CharField()
+    pub_date = forms.DateField()
 
-class GeeksForm(forms.Form): 
-    title = forms.CharField() 
-    description = forms.CharField() 
+
+class GeeksForm(forms.Form):
+    title = forms.CharField()
+    description = forms.CharField()

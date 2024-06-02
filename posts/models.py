@@ -5,10 +5,9 @@ import uuid
 
 
 def generate_filename(instance, filename):
-    ext = filename.split('.')[-1]
+    ext = filename.split(".")[-1]
     filename = f"{uuid.uuid4()}.{ext}"
-    return f'Posts/{filename}'
-
+    return f"Posts/{filename}"
 
 
 class Post(models.Model):

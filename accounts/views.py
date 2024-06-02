@@ -9,7 +9,7 @@ from accounts.decorators import is_user_authenticated
 from django.conf import settings
 
 
-@is_user_authenticated #custom decorator
+@is_user_authenticated  # custom decorator
 def register(request):
     try:
         form = UserRegistrationForm()
@@ -23,8 +23,8 @@ def register(request):
     except Exception as error:
         print(f"Exception in registering user - {error}")
 
- 
-@is_user_authenticated #custom decorator
+
+@is_user_authenticated  # custom decorator
 def login_view(request):
     form = AuthenticationForm()
     # import pdb
@@ -41,11 +41,12 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 from .tasks import send_login_mail
+
                 send_login_mail.delay(
-                    user_email = request.user.email,
-                    sender = settings.EMAIL_HOST_USER,
-                    subject = "Welcome!",
-                    message = "Thank you for logging in. Welcome to our website!" 
+                    user_email=request.user.email,
+                    sender=settings.EMAIL_HOST_USER,
+                    subject="Welcome!",
+                    message="Thank you for logging in. Welcome to our website!",
                 )
 
                 return redirect(reverse("homepage"))

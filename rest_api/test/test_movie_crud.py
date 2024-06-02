@@ -4,7 +4,12 @@ from rest_framework import status
 from django.urls import reverse
 from rest_api.models import Movies
 from model_bakery import baker
-from rest_api.serializers import CreatMovieRequestValidationSerializer, MoviesSerializer, MovieDetailedViewInputValidationSerializer, UpdateMovieRequestValidationSerializer
+from rest_api.serializers import (
+    CreatMovieRequestValidationSerializer,
+    MoviesSerializer,
+    MovieDetailedViewInputValidationSerializer,
+    UpdateMovieRequestValidationSerializer,
+)
 from unittest.mock import patch
 
 
@@ -41,11 +46,10 @@ class TestMovieModel(APITestCase):
         client = APIClient()
 
         # Input validation
-        input_parameters = {'movie_id': movie_created.id}
+        input_parameters = {"movie_id": movie_created.id}
         input_data = MovieDetailedViewInputValidationSerializer(data=input_parameters)
-        
-        self.assertTrue(input_data.is_valid(),'Input is not valid')
 
+        self.assertTrue(input_data.is_valid(), "Input is not valid")
 
         response = client.post(url, input_parameters)
 
@@ -65,7 +69,7 @@ class TestMovieModel(APITestCase):
         input_parameters = {"movie_id": movie_created.id, "producer": "jalsa"}
         validation_input = UpdateMovieRequestValidationSerializer(data=input_parameters)
 
-        self.assertTrue(validation_input.is_valid(), 'Input validation Failed')
+        self.assertTrue(validation_input.is_valid(), "Input validation Failed")
 
         response = client.put(update_url, input_parameters)
 
@@ -92,7 +96,9 @@ class TestMovieModel(APITestCase):
 
         # validating input
         validated_input = CreatMovieRequestValidationSerializer(data=create_movie_data)
-        self.assertTrue(validated_input.is_valid(), 'Input validation failed in serializer level')
+        self.assertTrue(
+            validated_input.is_valid(), "Input validation failed in serializer level"
+        )
 
         response = client.post(create_url, create_movie_data)
         self.assertIn("movie_created", response.data)

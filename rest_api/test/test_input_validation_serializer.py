@@ -19,9 +19,11 @@ class TestInputValidations(APITestCase):
         }
         data_after_validation = InputValidationserializer(data=input_data)
 
-        self.assertTrue(data_after_validation.is_valid(), 'Input validation failed')
+        self.assertTrue(data_after_validation.is_valid(), "Input validation failed")
 
         response = client.post(url, input_data)
 
-        self.assertEqual(response.status_code, status.HTTP_200_OK, 'Status code not matched')
+        self.assertEqual(
+            response.status_code, status.HTTP_200_OK, "Status code not matched"
+        )
         # self.assertEqual()

@@ -10,7 +10,9 @@ class Movies(models.Model):
     banner = models.CharField(max_length=100, null=True, blank=True)
     distributor = models.CharField(max_length=50, null=True, blank=True)
     release_date = models.DateField(null=True, blank=True)
-    rating = models.DecimalField(max_digits=2, decimal_places=1, null=True, blank=True, default=0.0)
+    rating = models.DecimalField(
+        max_digits=2, decimal_places=1, null=True, blank=True, default=0.0
+    )
 
     # Custom model manager
     objects = MovieModelManager()
@@ -18,13 +20,10 @@ class Movies(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name} - {self.lead_actor} - {self.director} - {self.producer}"
-    
+
     class Meta:
         verbose_name_plural = "Movies"
-        indexes = [
-            models.Index(fields=['name', 'lead_actor'])
-        ]
-
+        indexes = [models.Index(fields=["name", "lead_actor"])]
 
 
 class Book(models.Model):

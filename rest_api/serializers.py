@@ -30,7 +30,9 @@ class UpdateMovieRequestValidationSerializer(serializers.Serializer):
 
 class CreatMovieRequestValidationSerializer(serializers.Serializer):
     name = serializers.CharField(required=True, allow_null=False, allow_blank=False)
-    lead_actor = serializers.CharField(required=True, allow_null=False, allow_blank=False)
+    lead_actor = serializers.CharField(
+        required=True, allow_null=False, allow_blank=False
+    )
     director = serializers.CharField(required=True, allow_null=False, allow_blank=False)
     producer = serializers.CharField(required=True, allow_null=False, allow_blank=False)
 
@@ -43,10 +45,10 @@ class LoginRequestValidationSerializer(serializers.Serializer):
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = '__all__'
+        fields = "__all__"
 
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = "__all__"
