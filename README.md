@@ -1,4 +1,4 @@
-# Test-Driven Development with Django 🧪
+# Test-Driven Development with Django
 
 A Django project built entirely using **Test-Driven Development (TDD)** methodology. The project covers multiple Django concepts — ORM, authentication, blog posts, and a REST API — with every feature written test-first.
 
